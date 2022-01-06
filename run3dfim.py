@@ -33,7 +33,7 @@ class Run3dfim:
 
     def run_cmds(self):
         # run the commands
-        conditions = ['CondA', 'CondB', 'CondC', 'CondBandC']
+        conditions = ['CondA', 'CondB', 'CondC', 'CondBandC','CondBvsA','CondCvsA']
 
         # use the regressor file to derive the sub and ses
         for file in self.onedfiles[self.index[0]: self.index[1]]:
