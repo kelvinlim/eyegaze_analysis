@@ -16,4 +16,28 @@ cases.
 
 ```
 
+## to run
+```
+
+./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/fmriprep --start 1
+```
+
+## causal analysis - extract Tso rois, perform CDA to determine causal relationships
+
+```bash3dmaskave -mask /home/share/eyegaze_BIDS/Derivs/fmriprep/scripts/ROI_Tso/masks_3mm/TsoROI_Left_IPL_3mm.nii.gz -quiet /home/share/eyegaze_BIDS/Derivs/fmriprep/sub-835/ses-1535/func/sub-835_ses-1535_task-eyegazeall_run-1_space-MNI152NLin2009cAsym_desc-preproc_bold.nii.gz > /home/share/eyegaze_BIDS/Derivs/fmriprep/ROI_timeseries_output/Left_IPL.txt
+
+
+# to change permission to group fmri for directory tree
+sudo chgrp -R fmri * 
+```
+
+Tso ROIs will be in this folder
+```
+/home/share/eyegaze_BIDS/Derivs/fmriprep/scripts/ROI_Tso/masks_3mm
+
+TsoROI_Left_IPL_3mm.nii.gz  TsoROI_Left_pMFC_3mm.nii.gz  TsoROI_Left_pSTS_3mm.nii.gz  TsoROI_Left_Visual_3mm.nii.gz  TsoROI_Right_IPL_3mm.nii.gz  TsoROI_Right_pMFC_3mm.nii.gz  TsoROI_Right_pSTS_3mm.nii.gz  TsoROI_Right_Visual_3mm.nii.gz
+
+```
+
+Need to loop for each subject, each scan, each roi
 
