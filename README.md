@@ -3,7 +3,7 @@
 This is code for doing the eyegaze analysis.
 
 ## eyegaze task
-Need to autoamate the running of the following command line across multiple 
+Need to automate the running of the following command line across multiple 
 cases.
 
 ```
@@ -41,3 +41,19 @@ TsoROI_Left_IPL_3mm.nii.gz  TsoROI_Left_pMFC_3mm.nii.gz  TsoROI_Left_pSTS_3mm.ni
 
 Need to loop for each subject, each scan, each roi
 
+## Processing of rois and then cda analysis
+
+```
+# extract the Tso rois and place in the dataorig directory
+# this took about 90 minutes for 94 cases
+./extractroi.py 
+
+# standardize the data columns, new files are placed in data directory
+./stddata.py --diag
+
+# run the fges with lr
+./causalwrap_lr.py 
+
+# run the sem
+./sem_multi.py 
+```

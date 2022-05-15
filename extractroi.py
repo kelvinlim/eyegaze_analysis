@@ -25,10 +25,11 @@ class ExtractROI:
         self.list = list
         self.roidir = '/home/share/eyegaze_BIDS/Derivs/fmriprep/scripts/ROI_Tso/masks_3mm'
 
-        # make the output data directory
-        os.makedirs( 'data', exist_ok=True)
         # output directory where roi csv files are stored
-        self.outdir = 'data'
+        self.outdir = 'dataorig'
+        # make the output data directory
+        os.makedirs( self.outdir, exist_ok=True)
+
 
         # get list of processed files
         hint = "*task-eyegazeall*preproc_bold*.gz"
@@ -164,7 +165,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description = "Creates and runs the 3dmaskave command for the \
-            eyegaze task."
+            eyegaze task. Places data into dataorig directory."
     )
     parser.add_argument("--start", type = int,
                         help="beginning file list index , default 0",
@@ -176,7 +177,7 @@ if __name__ == "__main__":
                         help="The main directory location, typically \
                         this is the Derivs/fmriprep directory",
                         default='/home/share/eyegaze_BIDS/Derivs/fmriprep')
-    parser.add_argument("--list", help="TODO list the files to be processed",
+    parser.add_argument("--list", help="list the files to be processed",
                         action = "store_true")
     parser.add_argument("--dryrun", help="create the cmd but don't execute",
         action = "store_true", default = False)    
