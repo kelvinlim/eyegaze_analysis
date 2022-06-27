@@ -31,7 +31,7 @@ def create_eg_cond_lists():
 
     full_list = {}
     for c in ['A','B','C','D']:
-        offset = 320
+        offset = 310
         templist = [element + offset for element in rindex[c]]
         full_list[c] = rindex[c] + templist
 
