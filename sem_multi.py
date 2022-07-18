@@ -24,26 +24,31 @@ class Sem:
         fp = open(modelfile, 'r')
         desc = fp.read()
         
-        # read in data
-        datafile = os.path.join('data', prefix + '.csv')
-        data = pd.read_csv(datafile)
-        model = semopy.Model(desc)
-        opt_res = model.fit(data)
-        estimates = model.inspect()
-        
-        if not self.noplot_flag:
-            g = semopy.semplot(model, plotfile_png)
-            #g = semopy.semplot(model, plotfile_pdf)
-            # rename the gv file from no prefix to prefix + '.gv'
-            gvfile_no_suff = os.path.join(self.outputdir, prefix)
-            gv_file = os.path.join(self.outputdir, prefix + '.gv')
-            if os.path.isfile(gvfile_no_suff):
-                os.rename( gvfile_no_suff, gv_file)
+        # check size of desc file
+        if len(desc) > 0:
+            # read in data
+            datafile = os.path.join('data', prefix + '.csv')
+            data = pd.read_csv(datafile)
+            model = semopy.Model(desc)
+            opt_res = model.fit(data)
+            estimates = model.inspect()
+            
+            if not self.noplot_flag:
+                g = semopy.semplot(model, plotfile_png)
+                #g = semopy.semplot(model, plotfile_pdf)
+                # rename the gv file from no prefix to prefix + '.gv'
+                gvfile_no_suff = os.path.join(self.outputdir, prefix)
+                gv_file = os.path.join(self.outputdir, prefix + '.gv')
+                if os.path.isfile(gvfile_no_suff):
+                    os.rename( gvfile_no_suff, gv_file)
 
-        # write out estimates
-        estimates.to_csv('output/'+ prefix +'_semopy.csv',index=False)
-        estimates.to_json(path_or_buf='output/'+prefix + '_semopy.json', orient='records')
-        
+            # write out estimates
+            estimates.to_csv('output/'+ prefix +'_semopy.csv',index=False)
+            estimates.to_json(path_or_buf='output/'+prefix + '_semopy.json', orient='records')
+        else:
+            # model not available
+            print(f"*** No model available for {prefix}")
+                
 def main(index=[0,None], noplot=False, list=False):
     c = Sem(noplot=noplot)
 
@@ -59,10 +64,12 @@ def main(index=[0,None], noplot=False, list=False):
         exit()
 
     #for file in ['sub_1001.csv']:
+    i = 0
     for file in files[index[0]:index[1]]:
         # run semopy to calculate the parameters
         now = datetime.datetime.now()
-        print ('start:', now.strftime("%Y-%m-%d %H:%M:%S"))
+        infostr = f"{i}/{len(files)}"
+        print (infostr, 'start:', now.strftime("%Y-%m-%d %H:%M:%S"))
 
         prefix = pathlib.Path(file).stem
         print(prefix)
@@ -70,7 +77,8 @@ def main(index=[0,None], noplot=False, list=False):
         now = datetime.datetime.now()
         print ('finish:', now.strftime("%Y-%m-%d %H:%M:%S"))
             
- 
+        i += 1
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
