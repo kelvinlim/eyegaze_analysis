@@ -23,10 +23,9 @@ class Parse4cond:
         self.mdir = mdir
         self.stub=stub
         self.verbose=True
-        self.outdir = 'data'
-        self.datadir = 'data'
-        self.cfgversion = 2.1
-
+        self.outdir = 'dataorig'
+        self.datadir = 'dataorig'
+    
         # check if output directory exists if not create
         output = os.path.join(mdir, self.outdir)
         if not os.path.isdir(output):
@@ -57,11 +56,11 @@ class Parse4cond:
             # read in the data file into a df
             self.df = pd.read_csv(file)
 
-            for c in ['A','B','C','D']:
+            for c in ['A','B','C','D','E']:
                 # new output data file name
                 newdatafile = os.path.join(  self.mdir, 
                                             self.outdir, 
-                                            f"{basename}_c{c}.csv")
+                                            f"{basename}_run-c{c}.csv")
                 # create copy of df
                 tmpdf = self.df.copy()
                 # select the rows using an index list
@@ -95,9 +94,10 @@ class Parse4cond:
                         list(range(141,156)) + list(range(175,190)) + \
                         list(range(209,224)) + list(range(243,258)) + \
                         list(range(277,292))
+        rindex['E'] = list(range(8,310))
 
         full_list = {}
-        for c in ['A','B','C','D']:
+        for c in ['A','B','C','D','E']:
             offset = 310
             templist = [element + offset for element in rindex[c]]
             full_list[c] = rindex[c] + templist
@@ -107,9 +107,9 @@ class Parse4cond:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="""    
-    Parse the 4 conditions (ABCD) from the eyegaze task fmri dataset.  Assumes that
+    Parse the 5 conditions (ABCDE) from the eyegaze task fmri dataset.  Assumes that
     the input csv file has 621 rows including header.  The input csv file can have a 
-    stub to assist in file selection (e.g. _ptseries.csv)
+    stub to assist in file selection (e.g. _eyegazeall.csv)
 
     """)
 
@@ -120,12 +120,12 @@ if __name__ == "__main__":
                         help="end file list index, default None",
                         default=None)
     parser.add_argument("--mdir", type = str,
-                     help="main directory, default is the data",
-                     default='data') 
+                     help="main directory, default is the dataorig",
+                     default='dataorig') 
     parser.add_argument("--list", help="list the files to be processed",
                         action = "store_true")
     parser.add_argument("--stub",  type = str,
-                        help = "file stub to assist in file selection",
+                        help = "file stub to assist in file selection, default - eyegazeall.csv",
                         default = 'eyegazeall.csv')
     
     args = parser.parse_args()
