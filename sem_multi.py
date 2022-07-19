@@ -16,7 +16,7 @@ class Sem:
         self.outputdir = 'output'
         self.algo = 'fges'
         
-    def run_sem(self, prefix):  
+    def run_sem(self, prefix, count):  
         modelfile = os.path.join(self.outputdir, prefix + '.lav')
         plotfile_png = os.path.join(self.outputdir, prefix + '.png')
         plotfile_pdf = os.path.join(self.outputdir, prefix + '.pdf')
@@ -45,11 +45,13 @@ class Sem:
             # write out estimates
             estimates.to_csv('output/'+ prefix +'_semopy.csv',index=False)
             estimates.to_json(path_or_buf='output/'+prefix + '_semopy.json', orient='records')
+            return True
         else:
             # model not available
-            print(f"*** No model available for {prefix}")
-                
-def main(index=[0,None], noplot=False, list=False):
+            print(f"{count} *** No model available for {prefix}")
+            return False
+            
+def main(index=[0,None], noplot=False, list=False,verbose=False):
     c = Sem(noplot=noplot)
 
     files = glob.glob(os.path.join('output', "*.lav"))
@@ -67,15 +69,19 @@ def main(index=[0,None], noplot=False, list=False):
     i = 0
     for file in files[index[0]:index[1]]:
         # run semopy to calculate the parameters
-        now = datetime.datetime.now()
+        ntotal = len(files)
+        time1 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         infostr = f"{i}/{len(files)}"
-        print (infostr, 'start:', now.strftime("%Y-%m-%d %H:%M:%S"))
 
         prefix = pathlib.Path(file).stem
-        print(prefix)
-        c.run_sem(prefix)
-        now = datetime.datetime.now()
-        print ('finish:', now.strftime("%Y-%m-%d %H:%M:%S"))
+
+        c.run_sem(prefix, i)
+        time2 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        if verbose:
+            print ('start:', time1)
+            print(infostr, prefix)
+            print ('finish:', time2)
             
         i += 1
 
@@ -94,9 +100,11 @@ if __name__ == "__main__":
     parser.add_argument("--list", help="list the files to be processed",
                         action = "store_true",
                         default = False)
-    parser.add_argument("--noplot", help="do not create the plot files, \
-        default is to create the plot files",
-        action = "store_true", default = False)
+    parser.add_argument("--noplot", help="produce plots",
+                        action = "store_true",
+                        default = True)
+    parser.add_argument("--verbose", help="provide verbose messages",
+                        action = "store_true", default = False)
     args = parser.parse_args()
 
     # setup default values
@@ -106,7 +114,8 @@ if __name__ == "__main__":
     test = False
     if test:
         main( index = [args.start, 1], 
-            noplot=args.noplot, list=args.list)
+            noplot=args.noplot, list=args.list, verbose=args.verbose)
     else:
-        main( index = [args.start, args.end], noplot=args.noplot, list=args.list)
+        main( index = [args.start, args.end], noplot=args.noplot, 
+                    list=args.list, verbose=args.verbose)
         

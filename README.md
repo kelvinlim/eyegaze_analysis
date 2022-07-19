@@ -57,3 +57,79 @@ Need to loop for each subject, each scan, each roi
 # run the sem
 ./sem_multi.py 
 ```
+## Want to look at data under 5 conditions
+
+1. Condition A - 0 deg
+2. Condition B - 10 deg
+3. Condition C - 30 deg
+4. Condition D - shapes
+5. Condition E - all
+
+Filenames are in form of:
+```
+*eyegazeall_run_cX.csv
+```
+Where X is the condition.
+
+Steps:
+
+1. Extract out conditions from rawdata in dataorig. This has the 8 rois but with no std.
+
+    parse4cond.py
+
+    Needs to take the raw data from dataorig
+    and parse the conditions out (time) and write back into dataorig (since not yet std)
+
+2. Standardize the data from dataorig and write into the data directory
+
+    stddata.py
+
+3. Run the causalwrap_lr.py
+
+    run the fges with lr
+    ./causalwrap_lr.py 
+
+4. run the sem
+    ./sem_multi.py | tee 20220718_semlog.txt
+
+    The tee is used to save the files which failed due to No model available.
+
+
+5. Transfer the sem data to the dganalysis_fmri proj_eyegaze/semdata
+
+6. run roi analysis
+
+    ./dganalysis.py
+    
+
+
+
+
+
+
+
+
+
+## Quantifying the connections
+
+These are the ROIS
+
+1. Left_IPL
+2. Left_Visual
+3. Left_pMFC
+4. Left_pSTS
+5. Right_IPL
+6. Right_Visual
+7. Right_pMFC
+8. Right_pSTS
+
+Tso et al. 2021 only seem to use the Right side
+
+1. Right_IPL
+2. Right_Visual
+3. Right_pMFC
+4. Right_pSTS
+
+So we have the a total of 12 different directed edges for these 4 regions
+
+
