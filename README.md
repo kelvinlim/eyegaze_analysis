@@ -84,15 +84,18 @@ Steps:
 
     stddata.py
 
-3. Run the causalwrap_lr.py
+3. Run  causalwrap_lr.py - run the fges with likelihood-ratio
 
-    run the fges with lr
+    ```
     ./causalwrap_lr.py 
-
+    ```
 4. run the sem
-    ./sem_multi.py | tee 20220718_semlog.txt
 
     The tee is used to save the files which failed due to No model available.
+    ```
+    ./sem_multi.py | tee 20220718_semlog.txt
+    ```
+   
 
 
 5. Transfer the sem data to the dganalysis_fmri proj_eyegaze/semdata
@@ -106,14 +109,6 @@ Steps:
     ```
     ./dganalysis.py --proj eyegaze --cmd rcon
     ```
-
-
-
-
-
-
-
-
 
 ## Quantifying the connections
 
