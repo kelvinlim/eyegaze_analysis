@@ -44,6 +44,9 @@ Need to loop for each subject, each scan, each roi
 ## Processing of rois and then cda analysis
 
 ```
+# use rsync copy selected preproc files from msi to x0-28 via rsync
+rsync -avzh kolim@login.msi.umn.edu:/home/limko/shared/eyegaze/Derivs/fmriprep/sub*/ses*/func/*gazeall*preproc*nii.gz .
+
 # extract the Tso rois and place in the dataorig directory
 # this took about 90 minutes for 94 cases
 ./extractroi.py 

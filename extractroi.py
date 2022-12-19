@@ -24,6 +24,8 @@ class ExtractROI:
         self.index = index
         self.list = list
         self.roidir = '/home/share/eyegaze_BIDS/Derivs/fmriprep/scripts/ROI_Tso/masks_3mm'
+        
+        self.roidir = '/home/share/eyegaze_BIDS/Derivs/fmriprep_20220910/scripts/ROI_Tso/masks_3mm'
 
         # output directory where roi csv files are stored
         self.outdir = 'dataorig'
@@ -156,7 +158,7 @@ class ExtractROI:
         # return list of file matching the str
         
         files = glob.glob(os.path.join(
-            maindir,'**', str), recursive=True)
+            maindir, str), recursive=True)
         files.sort()
 
         return files
@@ -182,7 +184,7 @@ if __name__ == "__main__":
     parser.add_argument("--dryrun", help="create the cmd but don't execute",
         action = "store_true", default = False)    
     parser.add_argument("--test", help="create the cmd but don't execute",
-        action = "store_true", default = False)
+        action = "store_true", default = True)
     args = parser.parse_args()
 
     # setup default values
@@ -190,6 +192,7 @@ if __name__ == "__main__":
         args.end = int(args.end)
     
     if args.test:
+        args.main = "/home/share/eyegaze_BIDS/Derivs/just_preproc"
         c = ExtractROI(index = [args.start, 1],
                     maindir = args.main,
                     dryrun =args.dryrun,
