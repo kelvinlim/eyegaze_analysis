@@ -79,7 +79,7 @@ class Parse4cond:
         Create the eyegaze condition index lists for extracting timepoints for
         a condition.
 
-        Returns a dictionary of lists for each condition A-D
+        Returns a dictionary of lists for each condition A-E
         """                 
 
         rindex = {}
