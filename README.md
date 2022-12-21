@@ -110,6 +110,9 @@ Steps:
 6. run roi regional connectivity analysis in the dganalysis_fmri folder
 
     ```
+    # generate the roi file
+    ./proj_eyegaze/create_roi_file.py
+    # perform the regional connectivity analysis
     ./dganalysis.py --proj eyegaze --cmd rcon
     ```
 
