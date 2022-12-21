@@ -33,7 +33,7 @@ sudo chgrp -R fmri *
 
 Tso ROIs will be in this folder
 ```
-/home/share/eyegaze_BIDS/Derivs/fmriprep/scripts/ROI_Tso/masks_3mm
+~/Projects/eyegaze_analysis/ROI_Tso/masks_3mm
 
 TsoROI_Left_IPL_3mm.nii.gz  TsoROI_Left_pMFC_3mm.nii.gz  TsoROI_Left_pSTS_3mm.nii.gz  TsoROI_Left_Visual_3mm.nii.gz  TsoROI_Right_IPL_3mm.nii.gz  TsoROI_Right_pMFC_3mm.nii.gz  TsoROI_Right_pSTS_3mm.nii.gz  TsoROI_Right_Visual_3mm.nii.gz
 

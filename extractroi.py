@@ -14,6 +14,7 @@ import pandas as pd
 class ExtractROI:
     def __init__(self,
                  maindir='/home/share/eyegaze_BIDS/Derivs/fmriprep',
+                 roidir = '/home/limko/kolim/Projects/eyegaze_analysis/ROI_Tso/masks_3mm',
                  dryrun=True,
                  index = [0,None],
                  list=False,
@@ -23,10 +24,8 @@ class ExtractROI:
         self.dryrun = dryrun
         self.index = index
         self.list = list
-        self.roidir = '/home/share/eyegaze_BIDS/Derivs/fmriprep/scripts/ROI_Tso/masks_3mm'
+        self.roidir = roidir
         
-        self.roidir = '/home/share/eyegaze_BIDS/Derivs/fmriprep_20220910/scripts/ROI_Tso/masks_3mm'
-
         # output directory where roi csv files are stored
         self.outdir = 'dataorig'
         # make the output data directory
@@ -45,11 +44,11 @@ class ExtractROI:
         if self.list:
             i = 0
             for file in self.preproc_files:
-                print(f"{i}: {file}")
+                print(f"file {i}: {file}")
                 i += 1
             i = 0
             for file in self.roi_files:
-                print(f"{i}: {file}")
+                print(f"roi {i}: {file}")
                 i += 1
             exit()
 
@@ -154,11 +153,16 @@ class ExtractROI:
 
         return cmd
 
-    def getfiles(self, maindir, str="*task-eyegazeall*regress*.1D"):
+    def getfiles(self, maindir, recursive=True, str="*task-eyegazeall*regress*.1D"):
         # return list of file matching the str
+        # mode simple, path, is in the immediate directory
         
-        files = glob.glob(os.path.join(
-            maindir, str), recursive=True)
+        if recursive==True:
+            files = glob.glob(os.path.join(maindir,'**', str), 
+                              recursive=True)
+        else:
+            files = glob.glob(os.path.join(maindir, str), 
+                              recursive=False)  
         files.sort()
 
         return files
@@ -178,29 +182,36 @@ if __name__ == "__main__":
     parser.add_argument("--main", type = str,
                         help="The main directory location, typically \
                         this is the Derivs/fmriprep directory",
-                        default='/home/share/eyegaze_BIDS/Derivs/fmriprep')
+                        default='/home/limko/shared/eyegaze/Derivs/fmriprep')
+    parser.add_argument("--roidir", type = str,
+                        help="The roi directory location, typically \
+                        this is eyegaze_analysis/ROI_Tso/masks_3mm directory",
+                        default='/home/limko/kolim/Projects/eyegaze_analysis/ROI_Tso/masks_3mm')    
     parser.add_argument("--list", help="list the files to be processed",
                         action = "store_true")
     parser.add_argument("--dryrun", help="create the cmd but don't execute",
         action = "store_true", default = False)    
-    parser.add_argument("--test", help="create the cmd but don't execute",
-        action = "store_true", default = True)
+
     args = parser.parse_args()
 
     # setup default values
     if args.end != None:
         args.end = int(args.end)
     
-    if args.test:
+    test = False
+    
+    if test:
         args.main = "/home/share/eyegaze_BIDS/Derivs/just_preproc"
         c = ExtractROI(index = [args.start, 1],
                     maindir = args.main,
+                    roidir = args.roidir,
                     dryrun =args.dryrun,
                     list = args.list,
                     )
     else:
         c = ExtractROI(index = [args.start, args.end],
                  maindir = args.main,
+                 roidir = args.roidir,
                  dryrun =args.dryrun,
                  list = args.list,
                  )
