@@ -104,7 +104,7 @@ Steps:
 5. Transfer the sem data to the dganalysis_fmri proj_eyegaze/semdata
 
     ```
-    cp output/*semopy.csv ../dganalysis_fmri/proj_eyegaze/semdata
+    cp output/*[ABCDE]_semopy.csv ../dganalysis_fmri/proj_eyegaze/semdata
     ```
 
 6. run roi regional connectivity analysis in the dganalysis_fmri folder
