@@ -34,10 +34,17 @@ class Run3dfim:
 
         if self.list:
             count=0
+            total = len(self.onedfiles)
+            for item in self.onedfiles:
+                print(f"{count}/{total} {os.path.basename(item)}")
+                count += 1
+                
+            count=0
             total = len(self.preproc_files)
             for item in self.preproc_files:
                 print(f"{count}/{total} {os.path.basename(item)}")
-                count += 1
+                count += 1                
+                
             exit(0)
             
         # run the commands
@@ -191,14 +198,14 @@ if __name__ == "__main__":
     if args.end != None:
         args.end = int(args.end)
     
-    test = True
+    test = False
     
     if test:
         c = Run3dfim(index = [args.start, args.end],
-                    maindir = '/home/share/eyegaze_BIDS/Derivs/just_preproc',  # args.main,
+                    maindir = '/home/limko/shared/eyegaze_corr',  # args.main,
                     test =args.test,
-                    list = args.list,
-                    cmd = '3dfim',
+                    list = True,
+                    cmd = '3dvolreg',
                     singledir=True
             )
     else:
