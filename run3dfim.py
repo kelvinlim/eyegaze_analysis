@@ -99,8 +99,10 @@ class Run3dfim:
 
     def run_cmds(self):
         # run the commands
-        conditions = ['CondA', 'CondB', 'CondC', 'CondBandC','CondBvsA','CondCvsA']
+        conditions = ['CondA', 'CondB', 'CondC', 'CondBandC','CondBvsA','CondCvsA','CondBvsC']
 
+        file_count = 0
+        total = len(self.onedfiles)
         # use the regressor file to derive the sub and ses
         for file in self.onedfiles[self.index[0]: self.index[1]]:
             # get the sub and ses from the 1d file name
@@ -108,6 +110,8 @@ class Run3dfim:
             sub = subt.split('-')[1]
             ses = sest.split('-')[1]
             
+            print(f"FileCount: {file_count}/{total}")
+                     
             # loop for conditions
             for condition in conditions:
                 
@@ -119,7 +123,7 @@ class Run3dfim:
                     cmd = self.create_3dfim_cmd(self.maindir,
                                                 sub, ses,
                                                 condition)                   
-                    
+    
                 print(cmd)
                 if not self.test:
                     # run command
@@ -127,7 +131,7 @@ class Run3dfim:
                         os.system(cmd)
                     except:
                         print("An exception occured")
-
+            file_count += 1
 
     def create_3dfim_cmd(self, maindir, sub, ses, condition ):
         cmd  = "3dfim+ -input "
@@ -183,9 +187,9 @@ if __name__ == "__main__":
                         this is the Derivs/fmriprep directory",
                         default='/home/share/eyegaze_BIDS/Derivs/fmriprep')
     parser.add_argument("--cmd", type = str,
-                        help="Command to execute [3dfim, 3dregvol ] default none \
+                        help="Command to execute [3dfim, 3dregvol ] default 3dfim \
                         ",
-                        default='')
+                        default='3dfim')
     parser.add_argument("--list", help="list the files to be processed",
                         action = "store_true")
     parser.add_argument("--singledir", help="flat for single directory, default false",

@@ -19,7 +19,7 @@ cases.
 ## to run
 ```
 
-./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/fmriprep --start 1
+./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/fmriprep --cmd 3dfim --start 0
 ```
 ## to get the regress.1D files
 
