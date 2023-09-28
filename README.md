@@ -18,15 +18,18 @@ cases.
 
 ## to run
 ```
-
 ./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/fmriprep --cmd 3dfim --start 0
+
+# 20230928
+./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/just_preproc --cmd 3dfim  --singledir
+
+
 ```
 ## to get the regress.1D files
 
 preproc_bold.nii.gz files are in /home/share/eyegaze_BIDS/Derivs/just_preproc
 
 ```
-./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/just_preproc --cmd 3dvolreg 
 
 ```
 

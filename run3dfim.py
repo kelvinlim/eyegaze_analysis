@@ -187,7 +187,7 @@ if __name__ == "__main__":
                         this is the Derivs/fmriprep directory",
                         default='/home/share/eyegaze_BIDS/Derivs/fmriprep')
     parser.add_argument("--cmd", type = str,
-                        help="Command to execute [3dfim, 3dregvol ] default 3dfim \
+                        help="Command to execute [3dfim, 3dvolreg ] default 3dfim \
                         ",
                         default='3dfim')
     parser.add_argument("--list", help="list the files to be processed",
@@ -206,11 +206,11 @@ if __name__ == "__main__":
     
     if test:
         c = Run3dfim(index = [args.start, args.end],
-                    maindir = '/home/limko/shared/eyegaze_corr',  # args.main,
+                    maindir = args.main, #'/home/limko/shared/eyegaze_corr',  # args.main,
                     test =args.test,
-                    list = True,
-                    cmd = '3dvolreg',
-                    singledir=True
+                    list = args.list,
+                    cmd = '3dfim', #'3dvolreg',
+                    singledir=False, # True
             )
     else:
         c = Run3dfim(index = [args.start, args.end],
