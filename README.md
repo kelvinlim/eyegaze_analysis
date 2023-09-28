@@ -20,10 +20,16 @@ cases.
 ```
 ./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/fmriprep --cmd 3dfim --start 0
 
-# 20230928
+# 20230928 - run with added condition CondBvsC
 ./run3dfim.py --main /home/share/eyegaze_BIDS/Derivs/just_preproc --cmd 3dfim  --singledir
 
-
+# copy of just_preproc to msi
+ rsync -avzh .  kolim@mesabi.msi.umn.edu:/scratch.global/kolim-eyegaze-just-preproc
+# create a bucket
+s3cmd mb s3://kolim-eyegaze-just-preproc
+# sync data
+cd /scratch.global/kolim-eyegaze-just-preproc
+s3cmd sync . s3://kolim-eyegaze-just-preproc
 ```
 ## to get the regress.1D files
 
@@ -278,4 +284,46 @@ sub-910/ses-1610/func/sub-910_ses-1610_task-eyegazeall_run-01_bold.nii.gz
 sub-912/ses-1625/func/sub-912_ses-1625_task-eyegazeall_run-01_bold.nii.gz
 sub-913/ses-1628/func/sub-913_ses-1628_task-eyegazeall_run-01_bold.nii.gz
 
+```
+## Need to use mriqc to identify cases that exceed movement thresholds.
+
+I have run mriqc.  Now need to read in the files that hold the qc parameters.
+
+Here are some of the parameters found in the json file
+```
+ "dummy_trs": 0,
+  "dvars_nstd": 25.483176488739907,
+  "dvars_std": 1.0764459896768974,
+  "dvars_vstd": 0.9486463121486268,
+  "efc": 0.4251973106204035,
+  "fber": 114046.1640625,
+  "fd_mean": 0.17317441422897156,
+  "fd_num": 134,
+  "fd_perc": 21.612903225806452,
+  "fwhm_avg": 2.3240166666666666,
+  "fwhm_x": 2.3174566666666667,
+  "fwhm_y": 2.46567,
+  "fwhm_z": 2.1889233333333333,
+  "gcor": 0.0462889,
+  "gsr_x": -0.008140698075294495,
+  "gsr_y": 0.003578382544219494,
+  "provenance": {
+    "md5sum": "37ffd27b2fad15c544862765412a0baa",
+    "settings": {
+      "fd_thres": 0.2,
+      "testing": false
+    },
+    "software": "mriqc",
+
+```
+The json files will be in the sub-xxx/ses-yyy/func directory.
+
+A program has been created: mriqc_filter_results.py
+
+This program reads through all the available json files
+generated my mriqc in the mriqc directory and outputs
+those scans that exceed a threshold for the qc parameter.
+
+```
+$ ./mriqc_filter_results.py  | grep eyegazeall
 ```
